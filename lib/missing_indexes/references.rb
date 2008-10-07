@@ -5,18 +5,18 @@ class MissingIndexes::References
   end
   
   def check
-    all_foreign_keys.inject({}) do |acc, (table_name, keys)|
+    all_foreign_keys.inject({}){|acc, (table_name, keys)|
       none_indexed_keys = (keys || []) - (indexes_by_table[table_name] || [])
       if none_indexed_keys.any?
         acc.merge(table_name => none_indexed_keys)
       else
         acc
       end
-    end
+    }.sort_by(&:to_s)
   end
 
   def all_foreign_keys
-    table_fk_map = table_names.inject({}){|acc, table_name| acc.merge(table_name.to_sym => [])}
+    table_fk_map = table_names.inject({}){|acc, table_name| acc.merge(table_name.to_sym => Set.new)}
 
     classes.each do |klass|
       table_name = klass.table_name.to_sym
