@@ -4,6 +4,28 @@ require 'active_record'
 
 require File.join(File.dirname(__FILE__), "..", "lib", "missing_indexes")
 
+module CriminalDatabase
+  def self.included(other)    
+    other.with_temp_db do
+      create_table :crimes do |t|
+      end
+
+      create_table :criminals do |t|
+      end
+
+      create_table :incidents do |t|
+        t.references :criminal
+        t.references :victim
+        t.references :crime
+      end
+
+      add_index :incidents, :victim_id
+
+      create_table :victims do |t|
+      end
+    end
+  end
+end
 
 class Test::Unit::TestCase
   def self.with_temp_db(&block)
@@ -45,4 +67,9 @@ class Test::Unit::TestCase
       load_schema!
     end
   end
+  
+  def assert_array_equal(expected, actual, *args)
+    assert_equal(expected.sort, actual.sort, *args)
+  end
+  
 end
