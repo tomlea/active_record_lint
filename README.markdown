@@ -18,12 +18,12 @@ Loads all AR::Base subclasses and scans for belongs_to associations.
 Example
 =======
 
-$ rake db:missing_indexes:show
-list_items:
- list_id
+    $ rake db:missing_indexes:show
+    list_items:
+     list_id
 
-$ rake db:missing_indexes:show_fix
-add_index :list_items, :list_id
+    $ rake db:missing_indexes:show_fix
+    add_index :list_items, :list_id
 
 TODO
 ====
