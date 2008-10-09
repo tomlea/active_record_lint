@@ -1,6 +1,4 @@
 require 'test/unit'
-require 'rubygems'
-require 'active_record'
 
 require File.join(File.dirname(__FILE__), "..", "lib", "missing_indexes")
 

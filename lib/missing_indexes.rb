@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'active_record'
+
 module MissingIndexes
   def load_models(rails_root)
     pattern = File.join(rails_root, "app", "models", "*.rb")
