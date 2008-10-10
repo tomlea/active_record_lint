@@ -1,13 +1,13 @@
 class ActiveRecord::Lint::Scanner
   include ActiveRecord::Lint
+  include Memoize
   
   def initialize(connection = nil)
     @connection = connection || ActiveRecord::Base.connection
   end
   
   def missing_indexes
-    return @missing_indexes if @missing_indexes
-    @missing_indexes = (foreign_keys - indexes).inject({}){|acc, (table, key)|
+    (foreign_keys - indexes).inject({}){|acc, (table, key)|
       keys = acc[table] || []
       acc.merge(table => (keys | [key]))
     }
@@ -22,48 +22,43 @@ class ActiveRecord::Lint::Scanner
   end
   
   def foreign_keys
-    return @foreign_keys if @foreign_keys
-    
-    @foreign_keys = []
-    classes.each do |klass|
-      table_name = klass.table_name
-      klass.reflect_on_all_associations(:belongs_to).map(&:primary_key_name).each do |foreign_key|
-        @foreign_keys << TableColumnPair.new(table_name, foreign_key)
+    returning [] do |foreign_keys|
+      classes.each do |klass|
+        table_name = klass.table_name
+        klass.reflect_on_all_associations(:belongs_to).map(&:primary_key_name).each do |foreign_key|
+          foreign_keys << TableColumnPair.new(table_name, foreign_key)
+        end
       end
     end
-    
-    @foreign_keys
   end
+  memoize :foreign_keys
   
   def columns
-    return @columns if @columns
-    
-    @columns = []
-    @connection.tables.each do |table|
-      @connection.columns(table).each do |column|
-        @columns << TableColumnPair.new(table, column.name)
+    returning [] do |columns|
+      @connection.tables.each do |table|
+        @connection.columns(table).each do |column|
+          columns << TableColumnPair.new(table, column.name)
+        end
       end
     end
-    
-    columns
   end
+  memoize :columns
   
   def indexes
-    return @indexes if @indexes
-    
-    @indexes = []
-    @connection.tables.each do |table|
-      column_sets = @connection.indexes(table).map(&:columns)
-      column_sets.select{|col| col.size == 1}.flatten.each do |index|
-        @indexes << TableIndexPair.new(table, index)
+    returning [] do |indexes|
+      @connection.tables.each do |table|
+        column_sets = @connection.indexes(table).map(&:columns)
+        column_sets.select{|col| col.size == 1}.flatten.each do |index|
+          indexes << TableIndexPair.new(table, index)
+        end
       end
     end
-    
-    @indexes
   end
+  memoize :indexes
   
   def classes
     ActiveRecord::Base.send(:subclasses)
   end
+  memoize :classes
   
 end
