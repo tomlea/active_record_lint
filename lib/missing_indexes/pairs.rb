@@ -1,4 +1,4 @@
-module MissingIndexes
+module ActiveRecord::Lint
   class Pair
     include Comparable
     attr_accessor :a, :b

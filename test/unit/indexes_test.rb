@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), "..", "test_helper")
 
 class IndexesUnitTest < Test::Unit::TestCase
   include CriminalDatabase
-  include MissingIndexes
+  include ActiveRecord::Lint
   
   def test_should_have_correct_indexes
     scanner = Scanner.new(@connection)

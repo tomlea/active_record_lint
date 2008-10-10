@@ -1,5 +1,5 @@
-class MissingIndexes::Scanner
-  include MissingIndexes
+class ActiveRecord::Lint::Scanner
+  include ActiveRecord::Lint
   
   def initialize(connection = nil)
     @connection = connection || ActiveRecord::Base.connection

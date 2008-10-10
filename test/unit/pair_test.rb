@@ -1,8 +1,7 @@
 require File.join(File.dirname(__FILE__), "..", "test_helper")
 
 class PairUnitTest < Test::Unit::TestCase
-  include MissingIndexes
-  
+  include ActiveRecord::Lint
   def test_comparison
     assert_equal(Pair[1,2], Pair[1,2])
     assert_equal(0, Pair[1,2] <=> Pair[1,2])

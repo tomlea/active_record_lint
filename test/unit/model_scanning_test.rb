@@ -2,18 +2,18 @@ require File.join(File.dirname(__FILE__), "..", "test_helper")
 
 class ModelScanningUnitTest < Test::Unit::TestCase
   include CriminalDatabase
-  include MissingIndexes
+  include ActiveRecord::Lint
 
   def setup
-    MissingIndexes::unload_models
+    ActiveRecord::Lint::unload_models
     super
   end
   
   def test_should_have_correct_indexes    
     rails_root = File.join(File.dirname(__FILE__), "..", "fixtures", "criminals")
-    MissingIndexes::load_models(rails_root)
+    ActiveRecord::Lint::load_models(rails_root)
     
-    scanner = MissingIndexes::Scanner.new
+    scanner = ActiveRecord::Lint::Scanner.new
     
     expected = [
       Pair["incidents", "victim_id"],
