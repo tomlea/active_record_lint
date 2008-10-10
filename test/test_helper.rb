@@ -1,6 +1,6 @@
 require 'test/unit'
 
-require File.join(File.dirname(__FILE__), "..", "lib", "missing_indexes")
+require File.join(File.dirname(__FILE__), "..", "lib", "active_record_lint")
 
 module CriminalDatabase
   def self.included(other)    

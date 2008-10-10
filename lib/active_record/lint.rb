@@ -27,6 +27,6 @@ module ActiveRecord::Lint
 end
 
 
-Dir.glob(File.join(File.dirname(__FILE__), "missing_indexes", "*.rb")) do |file|
+Dir.glob(File.join(File.dirname(__FILE__), "lint", "*.rb")) do |file|
   require file
 end
