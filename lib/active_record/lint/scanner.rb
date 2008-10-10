@@ -17,6 +17,10 @@ class ActiveRecord::Lint::Scanner
     classes.map{|klass| klass.table_name } - @connection.tables
   end
   
+  def missing_foreign_keys
+    foreign_keys - columns
+  end
+  
   def foreign_keys
     return @foreign_keys if @foreign_keys
     
@@ -24,11 +28,24 @@ class ActiveRecord::Lint::Scanner
     classes.each do |klass|
       table_name = klass.table_name
       klass.reflect_on_all_associations(:belongs_to).map(&:primary_key_name).each do |foreign_key|
-        @foreign_keys << TableKeyPair.new(table_name, foreign_key)
+        @foreign_keys << TableColumnPair.new(table_name, foreign_key)
       end
     end
     
     @foreign_keys
+  end
+  
+  def columns
+    return @columns if @columns
+    
+    @columns = []
+    @connection.tables.each do |table|
+      @connection.columns(table).each do |column|
+        @columns << TableColumnPair.new(table, column.name)
+      end
+    end
+    
+    columns
   end
   
   def indexes

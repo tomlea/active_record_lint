@@ -34,13 +34,16 @@ module ActiveRecord::Lint
     end    
   end
 
-  class TableKeyPair < Pair
-    alias table a
+  class TableColumnPair < Pair
+    alias table  a
+    alias column b
+  end
+
+  class TableKeyPair < TableColumnPair
     alias key   b
   end
 
-  class TableIndexPair < Pair
-    alias table a
+  class TableIndexPair < TableColumnPair
     alias index b
   end
 end
