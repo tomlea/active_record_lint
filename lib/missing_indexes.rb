@@ -13,7 +13,7 @@ module MissingIndexes
     models = ActiveRecord::Base.send :class_variable_get, :@@subclasses
     models = models.keys - [ActiveRecord::Base]
     models.map(&:name).each do |name|
-      Object.send :remove_const, name
+      Object.send :remove_const, name unless name.nil? or name.empty?
     end
     ActiveRecord::Base.send :class_variable_set, :@@subclasses, {}
   end

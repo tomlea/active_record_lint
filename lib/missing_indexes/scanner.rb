@@ -13,6 +13,10 @@ class MissingIndexes::Scanner
     }
   end
   
+  def missing_tables
+    classes.map{|klass| klass.table_name } - @connection.tables
+  end
+  
   def foreign_keys
     return @foreign_keys if @foreign_keys
     
