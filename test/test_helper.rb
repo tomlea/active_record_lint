@@ -70,4 +70,18 @@ class Test::Unit::TestCase
     assert_equal(expected.sort, actual.sort, *args)
   end
   
+  def assert_array_includes(*args)
+    message = "Expected <%s> to include <%s>"
+    expected = args.clone
+    actual = expected.pop
+    
+    if actual.is_a? String
+      message = actual
+      actual = expected.pop
+    end
+
+    expected.each do |el|
+      assert actual.include?(el), (message % [actual.inspect, el.inspect])
+    end
+  end
 end

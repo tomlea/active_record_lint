@@ -7,10 +7,7 @@ class ActiveRecord::Lint::Scanner
   end
   
   def missing_indexes
-    (foreign_keys - indexes).inject({}){|acc, (table, key)|
-      keys = acc[table] || []
-      acc.merge(table => (keys | [key]))
-    }
+    foreign_keys - indexes
   end
   
   def missing_tables
@@ -29,7 +26,7 @@ class ActiveRecord::Lint::Scanner
           foreign_keys << TableColumnPair.new(table_name, foreign_key)
         end
       end
-    end
+    end.uniq
   end
   memoize :foreign_keys
   
@@ -40,7 +37,7 @@ class ActiveRecord::Lint::Scanner
           columns << TableColumnPair.new(table, column.name)
         end
       end
-    end
+    end.uniq
   end
   memoize :columns
   
@@ -52,7 +49,7 @@ class ActiveRecord::Lint::Scanner
           indexes << TableIndexPair.new(table, index)
         end
       end
-    end
+    end.uniq
   end
   memoize :indexes
   

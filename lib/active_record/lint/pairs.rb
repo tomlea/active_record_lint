@@ -15,8 +15,12 @@ module ActiveRecord::Lint
       (self <=> other) == 0
     end
     
+    def pair_name
+      @pair_name ||= self.class.name.split("::").last
+    end
+    
     def inspect
-      "Pair[#{a.inspect}, #{b.inspect}]"
+      "#{pair_name}[#{a.inspect}, #{b.inspect}]"
     end
 
     def hash

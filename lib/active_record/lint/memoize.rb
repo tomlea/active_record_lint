@@ -21,6 +21,7 @@ unless defined? Memoize
       unless store = instance_variable_get("@_#{method}_memoized")
         instance_variable_set("@_#{method}_memoized", store = {})
       end
+      store
     end
   end
 
