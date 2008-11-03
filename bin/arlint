@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+path = ARGV.last || Dir.pwd
+
+boot_path = File.join(path, 'config', 'boot.rb')
+environment_path = File.join(path, 'config', 'environment.rb')
+
+unless(File.exists?(boot_path) and File.exists?(environment_path))
+  puts "Usage: #{$0} path/to/rails/root"
+  exit(1)
+end
+
+require boot_path
+require environment_path
+require 'active_record_lint'
+
+ActiveRecord::Lint.load_models(path)
+
+scanner = ActiveRecord::Lint::Scanner.new()
+reporter = ActiveRecord::Lint::Reporter.new(scanner)
+
+puts reporter

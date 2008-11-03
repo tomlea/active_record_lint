@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = "active_record_lint"
-  s.version  = "0.0.1"
+  s.version  = "0.0.2"
   s.date     = "2008-10-14"
   s.summary  = "Rails tool to find foreign keys without indexes and other common issues."
   s.email    = "projects@tomlea.co.uk"
@@ -19,6 +19,9 @@ Gem::Specification.new do |s|
     "Rakefile",
     "README.markdown"
   ]
+  s.executables = [
+    "arlint"
+  ]
   s.test_files = [
     "test/fixtures/criminals/app/models/crime.rb",
     "test/fixtures/criminals/app/models/criminal.rb",
@@ -33,5 +36,4 @@ Gem::Specification.new do |s|
     "test/unit/model_scanning_test.rb",
     "test/unit/pair_test.rb"
   ]
-  s.add_dependency("active_record", ["> 0.0.0"])
 end
