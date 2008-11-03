@@ -18,7 +18,7 @@ module ActiveRecord::Lint
     def <=> (other)
       table <=> other.table
     end
-    
+
     def to_s
       "Expected the table '#{table}' to exist."
     end
